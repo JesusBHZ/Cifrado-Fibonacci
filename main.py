@@ -9,9 +9,6 @@ entrada = input("Tu texto a cifrar: ")
 palabras = entrada.split()
 cantidad_de_palabras = len(palabras)
 
-for palabra in palabras:
-    print(palabra)
-
 def fibonacci_recursivo(n):
     if n <= 0:
         return []
@@ -27,4 +24,33 @@ def fibonacci_recursivo(n):
 
 n = cantidad_de_palabras
 serie = fibonacci_recursivo(n)
-print(serie)
+
+def cifrado(serie, palabras):
+    cifradoText = ""
+    posiciones = []
+    
+    for palabra in palabras:
+        print("------")
+        print(palabra)
+        print("------")
+        palabra.upper()
+        letras = list(palabra.upper())
+        
+        for caracter in letras:
+            print(caracter)
+            if caracter in abecedario:
+                posicion = abecedario.index(caracter)
+                posiciones.append(posicion)
+            else:
+                print(f"La letra '{caracter}' no está en la lista.")
+        
+    for pos in posiciones:
+        cifradoText += listaImpar[pos]
+        
+         
+        
+    print(cifradoText)
+    return "cifradoText"
+
+
+print(cifrado(serie, palabras))
