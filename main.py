@@ -26,7 +26,6 @@ n = cantidad_de_palabras
 serie = fibonacci_recursivo(n)
 
 def cifrado(serie, palabras):
-    print(serie)
     cifradoText = ""
     posiciones = []
     palabrasWithSpace = [val for sublist in [[item, '-'] for item in palabras] for val in sublist]
@@ -43,32 +42,72 @@ def cifrado(serie, palabras):
             else:
                 print(f"La letra '{caracter}' no está en la lista.")
 
-    index = 0
+    indexFibonacci = 0
     print(serie)
+
+    contador = 0
     for pos in posiciones:
         try:
             if listaImpar[pos] == " ":
-                index += 1
-                
+                indexFibonacci += 1
                 cifradoText += listaImpar[pos]
-            
+                contador += 1
             else:
-                newIndex = serie[index]
-                
+                newIndex = serie[indexFibonacci]
+                if newIndex >= 34:                    
+                    del posiciones[:contador]
+                    cifradoText = cifradoWithTwoLists(serie, cifradoText, posiciones)
+                    break
+
                 cifradoText += listaImpar[pos+newIndex]
+                contador += 1
 
         except IndexError:
-            print(f"el valor de indice es {index}")
-            print(f"el valor de la serie es {newIndex}")
-            print(f"el valor de la lado es {pos+newIndex}")
             indiceForNewList = (pos+newIndex) - 26
-            print(f"el valor de la lado es {indiceForNewList}")
-            print("¡Error: El índice está fuera de rango!")
-
-        
+            cifradoText += listaImpar[indiceForNewList]
+            contador += 1
              
     # print(cifradoText)
     return cifradoText
 
+def cifradoWithTwoLists(listaFibonacci, cifradoText,newPositions):
+    del listaFibonacci[:9]
+
+    for newSerie, newPosition in zip(listaFibonacci, newPositions):
+        print("las posiciones")
+        print(newPositions)
+
+
+        desfase = newSerie/26
+        # print(desfase)
+        entero = int(desfase)
+        decimal = desfase - int(desfase)
+        decimales_str = str(decimal)[2:4]
+        multiplicacion = int(decimales_str[0]) * int(decimales_str[1])
+        newDesfase = multiplicacion + newPosition
+
+        if entero % 2 == 0:
+            cifradoText = cifradoPar(multiplicacion, cifradoText, newPosition)
+        else:
+            cifradoText = cifradoImpar(multiplicacion, cifradoText, newPosition)
+    
+    return cifradoText
+
+
+def cifradoPar(multiplicacion, cifradoText, newPosition):
+    print("listaPar")
+    print(f"el indeice es {newPosition}")
+    print(f"agrego: {listaPar[newPosition]} con un desfase de: {multiplicacion}")
+    cifradoText = cifradoText + listaPar[newPosition+multiplicacion]
+
+    return cifradoText
+
+def cifradoImpar(multiplicacion, cifradoText, newPosition):
+    print("listaImpar")
+    print(f"el indeice es {newPosition}")
+    print(f"agrego: {listaImpar[newPosition]} con un desfase de: {multiplicacion}")
+    cifradoText = cifradoText + listaImpar[newPosition+multiplicacion]
+
+    return cifradoText
 
 print(cifrado(serie, palabras))
