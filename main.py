@@ -6,8 +6,13 @@ listaPar = ["K16", "B3", "J25", "W20", "C2", "L9", "Y24", "M8", "R17", "N4", "O2
 
 
 entrada = input("Tu texto a cifrar: ")
-palabras = entrada.split()
+caracteres_no_deseados = [';', ',', '-', 'ñ']
+texto_limpio = ''.join(char for char in entrada if char not in caracteres_no_deseados)
+
+palabras = texto_limpio.split()
 cantidad_de_palabras = len(palabras)
+
+
 
 def fibonacci_recursivo(n):
     if n <= 0:
@@ -39,16 +44,18 @@ def cifrado(serie, palabras):
             if caracter in abecedario:
                 posicion = abecedario.index(caracter)
                 posiciones.append(posicion)
+                # print(posiciones)
             else:
                 print(f"La letra '{caracter}' no está en la lista.")
 
     indexFibonacci = 0
-    print(serie)
+    # print(serie)
 
     contador = 0
     for pos in posiciones:
         try:
             if listaImpar[pos] == " ":
+                # print(f"agrego un espacio {pos}")
                 indexFibonacci += 1
                 cifradoText += listaImpar[pos]
                 contador += 1
@@ -58,11 +65,20 @@ def cifrado(serie, palabras):
                     del posiciones[:contador]
                     cifradoText = cifradoWithTwoLists(serie, cifradoText, posiciones)
                     break
+                
+                # print(f"agrego {abecedario[pos]}")
+                if (pos+newIndex) == 26:
+                    pos = 0
+                    newIndex = 0 
 
-                cifradoText += listaImpar[pos+newIndex]
+                
+                sumaIndex = pos+newIndex
+                # print(f"que es {listaImpar[pos+newIndex]} wii con la posicion {sumaIndex}")    
+                cifradoText += listaImpar[sumaIndex]
                 contador += 1
 
         except IndexError:
+            # print("upp")
             indiceForNewList = (pos+newIndex) - 26
             cifradoText += listaImpar[indiceForNewList]
             contador += 1
@@ -70,44 +86,98 @@ def cifrado(serie, palabras):
     # print(cifradoText)
     return cifradoText
 
-def cifradoWithTwoLists(listaFibonacci, cifradoText,newPositions):
+def cifradoWithTwoLists(listaFibonacci, cifradoText, newPositions):
     del listaFibonacci[:9]
 
-    for newSerie, newPosition in zip(listaFibonacci, newPositions):
-        print("las posiciones")
-        print(newPositions)
+    resultado = []
+    sublista = []
 
+    for elemento in newPositions:
+        if elemento == 26:
+            if sublista:
+                resultado.append(sublista)
+            sublista = []
+        else:
+            sublista.append(elemento)
 
-        desfase = newSerie/26
-        # print(desfase)
+    if sublista:
+        resultado.append(sublista)
+
+    for sublista in resultado:
+        desfase = listaFibonacci.pop(0) / 26  # Utiliza un valor de listaFibonacci y elimínalo
+        # print(f"este es el desfase {desfase}")
         entero = int(desfase)
+        # print(f"hoiii {entero}")
         decimal = desfase - int(desfase)
-        decimales_str = str(decimal)[2:4]
-        multiplicacion = int(decimales_str[0]) * int(decimales_str[1])
-        newDesfase = multiplicacion + newPosition
+        # print(f"este es el número 1 {decimal:.2f}")  # Asegura dos decimales
+
+        # Formatea 'decimal' con dos decimales y luego extrae 'decimales_str' con los dos dígitos decimales
+        decimal_formateado = "{:.2f}".format(decimal)
+        decimales_str = decimal_formateado[-2:]
+        # print(f"este es el STR {decimales_str}")
+    
+        multiplicacion = int(decimales_str[0]) * int(decimales_str[1]) if decimales_str else 0        
 
         if entero % 2 == 0:
-            cifradoText = cifradoPar(multiplicacion, cifradoText, newPosition)
+            cifradoText = cifradoText + " "
+            cifradoText = cifradoPar(multiplicacion, cifradoText, sublista)
         else:
-            cifradoText = cifradoImpar(multiplicacion, cifradoText, newPosition)
-    
+            cifradoText = cifradoText + " "
+            cifradoText = cifradoImpar(multiplicacion, cifradoText, sublista)
+            
+
     return cifradoText
 
-
 def cifradoPar(multiplicacion, cifradoText, newPosition):
-    print("listaPar")
-    print(f"el indeice es {newPosition}")
-    print(f"agrego: {listaPar[newPosition]} con un desfase de: {multiplicacion}")
-    cifradoText = cifradoText + listaPar[newPosition+multiplicacion]
+    # print("ListaPar")
+    # print(newPosition)
+    #for lista in newPosition:
+        # print(abecedario[lista])
+    for lista in newPosition:
+        # print(f"El índice es {lista}")
+        # print(f"la pos seria: {lista + multiplicacion} por que la mult es {multiplicacion}")
+        
+        extraIndice = lista + multiplicacion
+        if extraIndice == 26:
+            extraIndice = 0
+        if extraIndice > 26:
+            # print(f"el extraindice vale {extraIndice}")
+            extraIndice = extraIndice % 26
+            # print(f"el modulo de extraindice  vale {extraIndice}")
 
+        # print(f"Agrego: {abecedario[lista]} que es {listaPar[lista]} con un desfase de: {multiplicacion} lo cual se traduce como: {listaPar[extraIndice]}")
+        cifradoText = cifradoText + listaPar[extraIndice]
+
+    # print(f"La lista va así: {cifradoText}")
     return cifradoText
 
 def cifradoImpar(multiplicacion, cifradoText, newPosition):
-    print("listaImpar")
-    print(f"el indeice es {newPosition}")
-    print(f"agrego: {listaImpar[newPosition]} con un desfase de: {multiplicacion}")
-    cifradoText = cifradoText + listaImpar[newPosition+multiplicacion]
+    # print("ListaImpar")
+    # print(newPosition)
+    # for lista in newPosition:
+        #print(abecedario[lista])
 
+
+    for lista in newPosition:
+        # print(f"El índice es {lista}")
+        # print(f"la pos seria: {lista + multiplicacion} por que la mult es {multiplicacion}")
+        
+        extraIndice = lista + multiplicacion
+        if extraIndice == 26:
+            extraIndice = 0
+        if extraIndice > 26:
+            # print(f"el extraindice vale {extraIndice}")
+            extraIndice = extraIndice % 26
+            # print(f"el modulo de extraindice  vale {extraIndice}")
+
+        # print(f"Agrego: {abecedario[lista]} que es {listaImpar[lista]} con un desfase de: {multiplicacion} lo cual se traduce como: {listaImpar[extraIndice]}")
+        cifradoText = cifradoText + listaImpar[extraIndice]
+
+    # print(f"La lista va así: {cifradoText}")
     return cifradoText
 
-print(cifrado(serie, palabras))
+
+print(f"Tu texto cifrado: {cifrado(serie, palabras)}")
+
+# Hola buenas tardes como esta usted espero que se encuentre bien usted y su familia
+#   1   2       3     4    5    6     7      8   9    10      11    12  13 14  15
