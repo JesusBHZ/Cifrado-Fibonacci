@@ -1,6 +1,6 @@
 abecedario = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z","-"]
 
-listaImpar = ["E17", "L8", "H23", "P2", "F13", "525", "Q28", "W19", "T1", "N21", "Z12", "O4", "Y3", "G10", "J15", "V9", "M7", "X11", "A5", "D14", "I26", "E16", "R24", "U20", "K18", "B22", " "]
+listaImpar = ["E17", "L8", "H23", "P2", "F13", "S25", "Q28", "W19", "T1", "N21", "Z12", "O4", "Y3", "G10", "J15", "V9", "M7", "X11", "A5", "D14", "I26", "E16", "R24", "U20", "K18", "B22", " "]
 
 listaPar = ["K16", "B3", "J25", "W20", "C2", "L9", "Y24", "M8", "R17", "N4", "O22", "X15", "A1", "P10", "V19", "G6", "S11", "D7", "U14", "I12", "N21", "Z13", "Q5", "F18", "E26", "T23", " "]
 
@@ -181,3 +181,4 @@ print(f"Tu texto cifrado: {cifrado(serie, palabras)}")
 
 # Hola buenas tardes como esta usted espero que se encuentre bien usted y su familia
 #   1   2       3     4    5    6     7      8   9    10      11    12  13 14  15
+
