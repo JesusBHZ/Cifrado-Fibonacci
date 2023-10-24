@@ -43,10 +43,10 @@ for seccion in palabras:
 
 def cifrado(serie, segunda_seccion):
     descifrado_text = ""
-
+    series = []
     for serie, letras in zip(serie, segunda_seccion):
         if serie < 34:
-            print(f'Variable 1: {serie}, Variable 2: {letras}')
+            # print(f'Variable 1: {serie}, Variable 2: {letras}')
             for caracter in letras:
                 if caracter in listaImpar:
                     posicion = listaImpar.index(caracter)
@@ -54,28 +54,25 @@ def cifrado(serie, segunda_seccion):
                     if posicion == 0:
                         if posicion == 0 and serie == 0:
                             posiciones.append(0)
-                            print(f'Caso 0: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[0]}')
+                            # print(f'Caso 0: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[0]}')
                         else:    
                             newPosition = 26 - serie
-                            print(f'Caso 0 0: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[newPosition]}')
+                            # print(f'Caso 0 0: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[newPosition]}')
                             posiciones.append(newPosition)
                     else:
                         posicionNegativa = posicion-serie
                         if posicionNegativa < 0:
-                            print(f'Caso more Megativo: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[posicionNegativa-1]} o {posicion-serie}')
+                            # print(f'Caso more Megativo: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[posicionNegativa-1]} o {posicion-serie}')
                             posiciones.append(posicionNegativa-1)
                         else:
-                            print(f'Caso more: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[posicion-serie]} o {posicion-serie}')
+                            # print(f'Caso more: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[posicion-serie]} o {posicion-serie}')
                             posiciones.append(posicion-serie)
 
                 else:
                     print(f"La letra '{caracter}' no está en la lista.")
             posiciones.append(26)    
         else:
-            # print(f'Variable 1: {serie}, Variable 2: {valor2}')
-            pass
-
-    print(posiciones)
+            series.append(serie)
 
     for pos in posiciones:
         try:
@@ -86,11 +83,95 @@ def cifrado(serie, segunda_seccion):
             #indiceForNewList = (pos+newIndex) - 26
             #cifradoText += listaImpar[indiceForNewList]
             #contador += 1
+    del segunda_seccion[:9]
+    
+    for serie, letras in zip(series, segunda_seccion):
+        # print(f'Variable 1: {serie}, Variable 2: {letras}')
+        # print()
+        desfase = serie/26
+        # print(f"este es el desface: {desfase}")
+        entero = int(desfase)
+        print(f"El entero {entero}")
+        decimal = desfase - int(desfase)
+        # print(f"este es el número 1: {decimal:.2f}")  # Asegura dos decimales
+        # Formatea 'decimal' con dos decimales y luego extrae 'decimales_str' con los dos dígitos decimales
+        decimal_formateado = "{:.2f}".format(decimal)
+        decimales_str = decimal_formateado[-2:]
+        # print(f"este es el STR {decimales_str}")
+        
+        multiplicacion = int(decimales_str[0]) * int(decimales_str[1]) if decimales_str else 0  
+        # print(f"este es la multiplicacion {multiplicacion}")
+
+        if entero % 2 == 0:
+            descifrado_text = descifrado_text + " "
+            descifrado_text = desCifradoPar(multiplicacion, descifrado_text, letras)
+        else:
+            descifrado_text = descifrado_text + " "
+            descifrado_text = desCifradoImpar(multiplicacion, descifrado_text, letras)
 
     return descifrado_text           
 
-# print(serie)
-# print(segunda_seccion)
+
+
+def desCifradoPar(multiplicacion, descifrado_text, letras):
+    # print("lista par")
+    try:
+        posiciones = []
+        for letra in letras:
+            if letra in listaPar:
+                    posicion = listaPar.index(letra)
+                    posiciones.append(posicion)
+        
+        print(posiciones)
+        for pos in posiciones:
+            desfase = pos-multiplicacion
+            # print(f"desfase : {desfase} con una multiplicacion de : {multiplicacion}")
+            if desfase >= 0:
+                descifrado_text = descifrado_text + abecedario[desfase]
+            elif desfase < 0:
+                des = 26 + (desfase)
+                if des >= 0:
+                    descifrado_text = descifrado_text + abecedario[des]
+                else:
+                    desfasePositivo = -1 * des
+                    desfasePositivoSegundoOrden = 26 - desfasePositivo
+                    descifrado_text = descifrado_text + abecedario[desfasePositivoSegundoOrden]
+
+    except IndexError:
+        print(f"upps {desfase}")
+    
+    return descifrado_text
+
+
+def desCifradoImpar(multiplicacion, descifrado_text, letras):
+    # print("lista impar")
+    try:
+        posiciones = []
+        for letra in letras:
+            if letra in listaImpar:
+                    posicion = listaImpar.index(letra)
+                    posiciones.append(posicion)
+
+        print(posiciones)
+        for pos in posiciones:
+            desfase = pos-multiplicacion
+            # print(f"desfase : {desfase} con una multiplicacion de : {multiplicacion}")
+            if desfase >= 0:
+                descifrado_text = descifrado_text + abecedario[desfase]
+            elif desfase < 0:
+                des = 26 + (desfase)
+                if des >= 0:
+                    descifrado_text = descifrado_text + abecedario[des]
+                else:
+                    desfasePositivo = -1 * des
+                    desfasePositivoSegundoOrden = 26 - desfasePositivo
+                    descifrado_text = descifrado_text + abecedario[desfasePositivoSegundoOrden]
+
+    except IndexError:
+        print(f"upps {desfase}")
+    
+    return descifrado_text
+
 
 print(f"Tu texto descifrado: {cifrado(serie, segunda_seccion)}")
 
