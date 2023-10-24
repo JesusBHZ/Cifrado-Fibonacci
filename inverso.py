@@ -52,12 +52,21 @@ def cifrado(serie, segunda_seccion):
                     posicion = listaImpar.index(caracter)
 
                     if posicion == 0:
-                        newPosition = 26 - serie
-                        print(f'Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[newPosition]}')
-                        posiciones.append(newPosition)
+                        if posicion == 0 and serie == 0:
+                            posiciones.append(0)
+                            print(f'Caso 0: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[0]}')
+                        else:    
+                            newPosition = 26 - serie
+                            print(f'Caso 0 0: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[newPosition]}')
+                            posiciones.append(newPosition)
                     else:
-                        print(f'Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[posicion-serie]}')
-                        posiciones.append(posicion-serie)
+                        posicionNegativa = posicion-serie
+                        if posicionNegativa < 0:
+                            print(f'Caso more Megativo: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[posicionNegativa-1]} o {posicion-serie}')
+                            posiciones.append(posicionNegativa-1)
+                        else:
+                            print(f'Caso more: Posicion de listaImpar: {posicion}, desfase: {serie} eso es igual a {abecedario[posicion-serie]} o {posicion-serie}')
+                            posiciones.append(posicion-serie)
 
                 else:
                     print(f"La letra '{caracter}' no está en la lista.")
